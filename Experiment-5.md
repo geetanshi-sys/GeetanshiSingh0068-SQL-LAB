@@ -1,98 +1,95 @@
-# SQL Lab – Experiment 4
+# SQL Lab – Experiment 2
 ## Aim
-To apply date functions, arithmetic operations, and conditional updates in SQL.
+To retrieve data from tables using basic SQL queries with conditions and filtering.
 
 ### Question 1
-Display the list of employees who have joined the company before 30th June 80 or after 31st Dec 81.
+List all distinct job in Employee.
 ### Query
 ```sql
-SELECT *
-FROM EMPLOYEE
-WHERE HIREDATE < '1980-06-30'
-OR HIREDATE > '1981-12-31';
-```
-
-### Question 2
-Display the names of employees whose names have second alphabet A in their names.
-### Query
-```sql
-SELECT ENAME
-FROM EMPLOYEE
-WHERE ENAME LIKE '_A%';
-```
-
-### Question 3
-Display the names of employees whose name is exactly five characters in length.
-### Query
-```sql
-SELECT ENAME
-FROM EMPLOYEE
-WHERE LENGTH(ENAME) = 5;
-```
-
-### Question 4
-Display the names of employees whose names have second alphabet A in their names.
-### Query
-```sql
-SELECT ENAME
-FROM EMPLOYEE
-WHERE ENAME LIKE '_A%';
-```
-
-### Question 5
-Display the names of employees who are not working as salesman or clerk or analyst.
-### Query
-```sql
-SELECT ENAME
-FROM EMPLOYEE
-WHERE JOB NOT IN ('SALESMAN', 'CLERK', 'ANALYST');
-```
-
-### Question 6
-Display the name of the employee along with their annual salary (sal*12). The name of the employee earning highest salary should appear first.
-### Query
-```sql
-SELECT ENAME, (SAL * 12) AS ANNUAL_SALARY
-FROM EMPLOYEE
-ORDER BY SAL DESC;
-```
-
-### Question 7
-Display name, sal, hra, pf, da, totalsal for each employee. The output should be in the order of total sal, hra 15% of sal, da 10% of sal, pf 5% of sal. Total salary will be (sal*hra*da)-pf.
-### Query
-```sql
-SELECT ENAME,
-       SAL,
-       (SAL * 0.15) AS HRA,
-       (SAL * 0.05) AS PF,
-       (SAL * 0.10) AS DA,
-       ((SAL + (SAL * 0.15) + (SAL * 0.10)) - (SAL * 0.05)) AS TOTALSAL
+SELECT DISTINCT JOB
 FROM EMPLOYEE;
 ```
 
-### Question 8
-Update the salary of each employee by 10% increment who are not eligible for commission.
+### Question 2
+List all information about employee in Department Number 30.
 ### Query
 ```sql
-UPDATE EMPLOYEE
-SET SAL = SAL + (SAL * 0.10)
-WHERE COMM IS NULL;
+SELECT *
+FROM EMPLOYEE
+WHERE DEPTNO = 30;
+```
+
+### Question 3
+Find all department number with department names greater than 20.
+### Query
+```sql
+SELECT DEPTNO, DNAME
+FROM DEPARTMENT
+WHERE DEPTNO > 20;
+```
+
+### Question 4
+Find all information about all the managers as well as the clerks in department 30.
+### Query
+```sql
+SELECT *
+FROM EMPLOYEE
+WHERE (JOB = 'MANAGER' OR JOB = 'CLERK')
+AND DEPTNO = 30;
+```
+
+### Question 5
+List the Employee name, Employee numbers and department of all clerks.
+### Query
+```sql
+SELECT ENAME, EMPNO, DEPTNO
+FROM EMPLOYEE
+WHERE JOB = 'CLERK';
+```
+
+### Question 6
+Find all managers not in department 30.
+### Query
+```sql
+SELECT *
+FROM EMPLOYEE
+WHERE JOB = 'MANAGER'
+AND DEPTNO <> 30;
+```
+
+### Question 7
+List information about all Employees in department 10 who are not manager or clerks.
+### Query
+```sql
+SELECT *
+FROM EMPLOYEE
+WHERE DEPTNO = 10
+AND JOB NOT IN ('MANAGER', 'CLERK');
+```
+
+### Question 8
+Find Employees and jobs earning between 1200 and 1400.
+### Query
+```sql
+SELECT ENAME, JOB, SAL
+FROM EMPLOYEE
+WHERE SAL BETWEEN 1200 AND 1400;
 ```
 
 ### Question 9
-Display those employees whose salary is more than 3000 after giving 20% increment.
+List Name and Department Number of employee who are clerks, analyst or salesman.
 ### Query
 ```sql
-SELECT *
+SELECT ENAME, DEPTNO
 FROM EMPLOYEE
-WHERE (SAL + (SAL * 0.20)) > 3000;
+WHERE JOB IN ('CLERK', 'ANALYST', 'SALESMAN');
 ```
 
 ### Question 10
-Display those employees whose salary contains atleast 3 digits.
+List Name and Department Number of employee whose names began with M.
 ### Query
 ```sql
-SELECT *
+SELECT ENAME, DEPTNO
 FROM EMPLOYEE
-WHERE SAL BETWEEN 100 AND 9999;
+WHERE ENAME LIKE 'M%';
 ```

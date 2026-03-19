@@ -1,112 +1,98 @@
-# SQL Lab – Experiment 6
+# SQL Lab – Experiment 4
 ## Aim
-To implement SQL functions related to date, time, conversion, and formatting.
+To apply date functions, arithmetic operations, and conditional updates in SQL.
 
 ### Question 1
-Display empno, ename, deptno from employee table. Instead of display department numbers display the related department name (Use decode function).
+Display the list of employees who have joined the company before 30th June 80 or after 31st Dec 81.
 ### Query
 ```sql
-SELECT EMPNO,
-       ENAME,
-       DECODE(DEPTNO,
-              10, 'RESEARCH',
-              20, 'ACCOUNTING',
-              30, 'SALES',
-              40, 'OPERATIONS') AS DEPARTMENT
-FROM EMPLOYEE;
+SELECT *
+FROM EMPLOYEE
+WHERE HIREDATE < '1980-06-30'
+OR HIREDATE > '1981-12-31';
 ```
 
 ### Question 2
-Display your age in days.
+Display the names of employees whose names have second alphabet A in their names.
 ### Query
 ```sql
-SELECT (SYSDATE - TO_DATE('01-JAN-2005','DD-MON-YYYY')) AS AGE_IN_DAYS
-FROM DUAL;
+SELECT ENAME
+FROM EMPLOYEE
+WHERE ENAME LIKE '_A%';
 ```
 
 ### Question 3
-Display your age in months.
+Display the names of employees whose name is exactly five characters in length.
 ### Query
 ```sql
-SELECT MONTHS_BETWEEN(SYSDATE, TO_DATE('01-JAN-2005','DD-MON-YYYY')) AS AGE_IN_MONTHS
-FROM DUAL;
+SELECT ENAME
+FROM EMPLOYEE
+WHERE LENGTH(ENAME) = 5;
 ```
 
 ### Question 4
-Display the current date as 15th August Friday Nineteen Ninety-Seven.
+Display the names of employees whose names have second alphabet A in their names.
 ### Query
 ```sql
-SELECT TO_CHAR(TO_DATE('15-AUG-1997','DD-MON-YYYY'),
-       'DDth Month Day YYYY') AS FORMATTED_DATE
-FROM DUAL;
+SELECT ENAME
+FROM EMPLOYEE
+WHERE ENAME LIKE '_A%';
 ```
 
 ### Question 5
-Find the date for nearest Saturday after current date.
+Display the names of employees who are not working as salesman or clerk or analyst.
 ### Query
 ```sql
-SELECT NEXT_DAY(SYSDATE, 'SATURDAY') AS NEXT_SATURDAY
-FROM DUAL;
+SELECT ENAME
+FROM EMPLOYEE
+WHERE JOB NOT IN ('SALESMAN', 'CLERK', 'ANALYST');
 ```
 
 ### Question 6
-Display current time.
+Display the name of the employee along with their annual salary (sal*12). The name of the employee earning highest salary should appear first.
 ### Query
 ```sql
-SELECT TO_CHAR(SYSDATE, 'HH:MI:SS AM') AS CURRENT_TIME
-FROM DUAL;
+SELECT ENAME, (SAL * 12) AS ANNUAL_SALARY
+FROM EMPLOYEE
+ORDER BY SAL DESC;
 ```
 
 ### Question 7
-Display the date three months Before the current date.
-### Query
-```sql
-SELECT ADD_MONTHS(SYSDATE, -3) AS DATE_BEFORE_3_MONTHS
-FROM DUAL;
-```
-
-### Question 8
-Display those employees who joined in the company in the month of Dec.
-### Query
-```sql
-SELECT *
-FROM EMPLOYEE
-WHERE TO_CHAR(HIREDATE, 'MON') = 'DEC';
-```
-
-### Question 9
-Display those employees whose first 2 characters from hire date - last 2 characters of salary.
+Display name, sal, hra, pf, da, totalsal for each employee. The output should be in the order of total sal, hra 15% of sal, da 10% of sal, pf 5% of sal. Total salary will be (sal*hra*da)-pf.
 ### Query
 ```sql
 SELECT ENAME,
-       SUBSTR(TO_CHAR(HIREDATE,'DDMMYYYY'),1,2) ||
-       SUBSTR(TO_CHAR(SAL),-2) AS RESULT
+       SAL,
+       (SAL * 0.15) AS HRA,
+       (SAL * 0.05) AS PF,
+       (SAL * 0.10) AS DA,
+       ((SAL + (SAL * 0.15) + (SAL * 0.10)) - (SAL * 0.05)) AS TOTALSAL
 FROM EMPLOYEE;
 ```
 
+### Question 8
+Update the salary of each employee by 10% increment who are not eligible for commission.
+### Query
+```sql
+UPDATE EMPLOYEE
+SET SAL = SAL + (SAL * 0.10)
+WHERE COMM IS NULL;
+```
+
+### Question 9
+Display those employees whose salary is more than 3000 after giving 20% increment.
+### Query
+```sql
+SELECT *
+FROM EMPLOYEE
+WHERE (SAL + (SAL * 0.20)) > 3000;
+```
+
 ### Question 10
-Display those employees whose 10% of salary is equal to year of joining.
+Display those employees whose salary contains atleast 3 digits.
 ### Query
 ```sql
 SELECT *
 FROM EMPLOYEE
-WHERE (SAL * 0.10) = TO_NUMBER(TO_CHAR(HIREDATE,'YYYY'));
-```
-
-### Question 11
-Display those employees who joined the company before 15 of the month.
-### Query
-```sql
-SELECT *
-FROM EMPLOYEE
-WHERE TO_NUMBER(TO_CHAR(HIREDATE,'DD')) < 15;
-```
-
-### Question 12
-Display those employees whose joining DATE is available in deptno.
-### Query
-```sql
-SELECT *
-FROM EMPLOYEE
-WHERE TO_NUMBER(TO_CHAR(HIREDATE,'DD')) = DEPTNO;
+WHERE SAL BETWEEN 100 AND 9999;
 ```

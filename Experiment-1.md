@@ -1,60 +1,45 @@
-# SQL Lab – Setup 
-## Aim
-To create Tables and insert values. 
-
-## Question 1
-Create the table EMPLOYEE
+# SQL BOLT – EXP 5
+## Aim 1
+List all the Canadian cities and their populations
 ### Query
 ```sql
-CREATE TABLE EMPLOYEE (
-    EMPNO INT(4) PRIMARY KEY,
-    ENAME VARCHAR(20) NOT NULL,
-    JOB VARCHAR(20),
-    MGR INT(4),
-    HIREDATE DATE,
-    SAL DECIMAL(10,2),
-    COMM DECIMAL(7,2),
-    DEPTNO INT(2)
-);
-```
-## Question 2
-Create the table DEPARTMENT
-## Query
-```sql
-CREATE TABLE DEPARTMENT (
-    Deptno INT(2) PRIMARY KEY,
-    Dname VARCHAR(15) NOT NULL
-);
+SELECT city, population FROM north_american_cities
+WHERE country = "Canada";
 ```
 
-## Question 3
-Insert the values in Table EMPLOYEE
+## Aim 2
+Order all the cities in the United States by their latitude from north to south
 ## Query
 ```sql
-INSERT INTO EMPLOYEE VALUES
-(7369, 'SMITH', 'CLERK', 7902, '1980-12-17', 800, NULL, 20),
-(7499, 'ALLEN', 'SALESMAN', 7698, '1981-02-20', 1600, 300, 30),
-(7521, 'WARD', 'SALESMAN', 7698, '1981-02-22', 1250, 300, 30),
-(7566, 'JONES', 'MANAGER', 7839, '1981-04-02', 2975, NULL, 20),
-(7654, 'MARTIN', 'SALESMAN', 7698, '1981-09-28', 1250, 1400, 30),
-(7698, 'BLAKE', 'MANAGER', 7839, '1981-05-01', 2850, NULL, 30),
-(7782, 'CLARK', 'MANAGER', 7839, '1981-06-09', 2450, NULL, 20),
-(7788, 'SCOTT', 'ANALYST', 7566, '1982-12-09', 3000, NULL, 40),
-(7839, 'KING', 'PRESIDENT', NULL, '1981-11-17', 5000, NULL, 20),
-(7844, 'TURNER', 'SALESMAN', 7698, '1981-09-08', 1500, 0, 30),
-(7876, 'ADAMS', 'CLERK', 7788, '1983-01-12', 1100, NULL, 20),
-(7900, 'JAMES', 'CLERK', 7698, '1981-12-03', 950, NULL, 30),
-(7902, 'FORD', 'ANALYST', 7566, '1981-12-03', 3000, NULL, 20),
-(7934, 'MILLER', 'CLERK', 7782, '1982-01-23', 1300, NULL, 10);
+SELECT city, latitude FROM north_american_cities
+WHERE country = "United States"
+ORDER BY latitude DESC;
 ```
 
-## Question 4
-Insert the values in Table DEPARTMENT
+## Aim 3
+List all the cities west of Chicago, ordered from west to east
+## Query
+```sql
+SELECT city, longitude FROM north_american_cities
+WHERE longitude < -87.629798
+ORDER BY longitude ASC;
+```
+
+## Aim 4
+List the two largest cities in Mexico (by population) ✓
 ## Query 
 ```sql
-INSERT INTO DEPARTMENT (Deptno, Dname) VALUES
-(10, 'RESEARCH'),
-(20, 'ACCOUNTING'),
-(30, 'SALES'),
-(40, 'OPERATIONS');
+SELECT city, population FROM north_american_cities
+WHERE country LIKE "Mexico"
+ORDER BY population DESC
+LIMIT 2;
+```
+## Aim 5
+List the third and fourth largest cities (by population) in the United States and their population
+## Query 
+```sql
+SELECT city, population FROM north_american_cities
+WHERE country LIKE "United States"
+ORDER BY population DESC
+LIMIT 2 OFFSET 2;
 ```

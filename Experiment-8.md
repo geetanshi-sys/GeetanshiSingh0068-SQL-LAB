@@ -1,103 +1,128 @@
-# SQL Lab – Experiment 7
+# SQL Lab – Experiment 5
 ## Aim
-To perform advanced queries using grouping, subqueries, matrix queries, and salary comparisons.
+To use aggregate functions and single-row functions for data analysis and formatting.
 
 ### Question 1
-Compute the no. of days remaining in this year.
+Display the total number of employee working in the company.
 ### Query
 ```sql
-SELECT (TO_DATE('31-DEC-' || TO_CHAR(SYSDATE,'YYYY'),'DD-MON-YYYY') - SYSDATE) AS DAYS_REMAINING
-FROM DUAL;
+SELECT COUNT(*) AS TOTAL_EMPLOYEES
+FROM EMPLOYEE;
 ```
 
 ### Question 2
-Find the highest and lowest salaries and the difference between them.
+Display the total salary being paid to all employees.
 ### Query
 ```sql
-SELECT MAX(SAL) AS HIGHEST_SALARY,
-       MIN(SAL) AS LOWEST_SALARY,
-       (MAX(SAL) - MIN(SAL)) AS DIFFERENCE
+SELECT SUM(SAL) AS TOTAL_SALARY
 FROM EMPLOYEE;
 ```
 
 ### Question 3
-List employee whose commission is greater than 25 % of their salaries.
+Display the maximum salary from employee table.
 ### Query
 ```sql
-SELECT *
-FROM EMPLOYEE
-WHERE COMM > (SAL * 0.25);
+SELECT MAX(SAL) AS MAX_SALARY
+FROM EMPLOYEE;
 ```
 
 ### Question 4
-Make a query that displays salary in dollar format.
+Display the minimum salary from employee table.
 ### Query
 ```sql
-SELECT ENAME,
-       TO_CHAR(SAL,'$99,999.99') AS SALARY_IN_DOLLAR
+SELECT MIN(SAL) AS MIN_SALARY
 FROM EMPLOYEE;
 ```
 
 ### Question 5
-Create a matrix query to display the job, the salary for that job based on department number, and the total salary for that job for all departments, giving each column an appropriate heading.
+Display the average salary from employee table.
 ### Query
 ```sql
-SELECT JOB,
-       SUM(DECODE(DEPTNO,10,SAL)) AS DEPT10,
-       SUM(DECODE(DEPTNO,20,SAL)) AS DEPT20,
-       SUM(DECODE(DEPTNO,30,SAL)) AS DEPT30,
-       SUM(DECODE(DEPTNO,40,SAL)) AS DEPT40,
-       SUM(SAL) AS TOTAL
-FROM EMPLOYEE
-GROUP BY JOB;
-```
-
-### Question 6
-Query that will display the total no of employees, and of that total the number who were hired in 1980,1981,1982 and 1983. Give appropriate column heading.
-### Query
-```sql
-SELECT COUNT(*) AS TOTAL_EMPLOYEES,
-       SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1980',1,0)) AS Y1980,
-       SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1981',1,0)) AS Y1981,
-       SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1982',1,0)) AS Y1982,
-       SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1983',1,0)) AS Y1983
+SELECT AVG(SAL) AS AVG_SALARY
 FROM EMPLOYEE;
 ```
 
-### Question 7
-Query to get the last Sunday of Any Month.
+### Question 6
+Display the maximum salary being paid to clerk.
 ### Query
 ```sql
-SELECT NEXT_DAY(LAST_DAY(SYSDATE) - 7, 'SUNDAY') AS LAST_SUNDAY
-FROM DUAL;
+SELECT MAX(SAL) AS MAX_CLERK_SALARY
+FROM EMPLOYEE
+WHERE JOB = 'CLERK';
+```
+
+### Question 7
+Display the maximum salary being paid in dept no 20.
+### Query
+```sql
+SELECT MAX(SAL) AS MAX_SALARY_DEPT20
+FROM EMPLOYEE
+WHERE DEPTNO = 20;
 ```
 
 ### Question 8
-Display department numbers and total number of employees working in each department.
+Display the minimum salary paid to any salesman.
 ### Query
 ```sql
-SELECT DEPTNO,
-       COUNT(*) AS TOTAL_EMPLOYEES
+SELECT MIN(SAL) AS MIN_SALESMAN_SALARY
 FROM EMPLOYEE
-GROUP BY DEPTNO;
+WHERE JOB = 'SALESMAN';
 ```
 
 ### Question 9
-Display the various jobs and total number of employees within each job group.
+Display the average salary drawn by managers.
 ### Query
 ```sql
-SELECT JOB,
-       COUNT(*) AS TOTAL_EMPLOYEES
+SELECT AVG(SAL) AS AVG_MANAGER_SALARY
 FROM EMPLOYEE
-GROUP BY JOB;
+WHERE JOB = 'MANAGER';
 ```
 
 ### Question 10
-Display the department numbers and total salary for each department.
+Display the total salary drawn by analyst working in dept no 40.
 ### Query
 ```sql
-SELECT DEPTNO,
-       SUM(SAL) AS TOTAL_SALARY
+SELECT SUM(SAL) AS TOTAL_ANALYST_SALARY
 FROM EMPLOYEE
-GROUP BY DEPTNO;
+WHERE JOB = 'ANALYST'
+AND DEPTNO = 40;
+```
+
+### Question 11
+Display the names of the employee in Uppercase.
+### Query
+```sql
+SELECT UPPER(ENAME) AS EMPLOYEE_NAME
+FROM EMPLOYEE;
+```
+
+### Question 12
+Display the names of the employee in Lowercase.
+### Query
+```sql
+SELECT LOWER(ENAME) AS EMPLOYEE_NAME
+FROM EMPLOYEE;
+```
+
+### Question 13
+Display the names of the employee in Proper case.
+### Query
+```sql
+SELECT CONCAT(UPPER(SUBSTRING(ENAME,1,1)), LOWER(SUBSTRING(ENAME,2))) AS EMPLOYEE_NAME
+FROM EMPLOYEE;
+```
+
+### Question 14
+Display the length of your name using appropriate function.
+### Query
+```sql
+SELECT LENGTH('YourName') AS NAME_LENGTH;
+```
+
+### Question 15
+Display the length of all the employee names.
+### Query
+```sql
+SELECT ENAME, LENGTH(ENAME) AS NAME_LENGTH
+FROM EMPLOYEE;
 ```
